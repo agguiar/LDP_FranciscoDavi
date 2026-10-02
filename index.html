@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Análise de Criminalidade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f8;
+            color: #243247;
+            margin: 0;
+            line-height: 1.7;
+        }
+        header {
+            background: #183153;
+            color: white;
+            padding: 45px 24px;
+            text-align: center;
+        }
+        header h1 { line-height: 1.3; }
+        main {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        h2 { color: #183153; }
+        footer {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Criminalidade em Grandes Cidades Brasileiras</h1>
+        <p>Projeto de análise e visualização de dados com Python</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Objetivo</h2>
+            <p>
+                Explorar a evolução das ocorrências e comparar cidades,
+                regiões, tipos de crime e períodos do dia por meio
+                de um dashboard interativo.
+            </p>
+        </section>
+
+        <section>
+            <h2>Base de dados</h2>
+            <p>
+                Base simulada com 4.440 registros de 37 cidades
+                brasileiras, entre 2015 e 2024.
+            </p>
+            <p>
+                Fonte:
+                <a href="https://github.com/AlexandreLouzada/Dados-Simulados-G2">
+                    Dados-Simulados-G2 — Alexandre Louzada
+                </a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Análises disponíveis</h2>
+            <ul>
+                <li>Evolução mensal das ocorrências.</li>
+                <li>Rankings de cidades e tipos de crime.</li>
+                <li>Comparação entre regiões.</li>
+                <li>Mapa de calor por crime e período do dia.</li>
+                <li>Relação entre renda média e índice de violência.</li>
+                <li>Tabela de ocorrências por região e crime.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Tecnologias utilizadas</h2>
+            <p>
+                Python, Pandas, Matplotlib, Seaborn, Streamlit,
+                SQLAlchemy e SQLite.
+            </p>
+        </section>
+
+        <section>
+            <h2>Conclusão e limitações</h2>
+            <p>
+                O projeto transforma dados em indicadores e visualizações,
+                facilitando a exploração com filtros interativos.
+                Os dados são simulados e não representam a segurança
+                real das cidades. Os totais não são ajustados pela
+                população, e a correlação não comprova causa e efeito.
+            </p>
+        </section>
+    </main>
+
+    <footer>Projeto acadêmico — Sistemas de Informação</footer>
+</body>
+</html>
