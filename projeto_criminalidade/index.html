@@ -1,127 +1,357 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Análise de Criminalidade</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f5f8;
-            color: #243247;
-            margin: 0;
-            line-height: 1.7;
-        }
-        header {
-            background: #183153;
-            color: white;
-            padding: 45px 24px;
-            text-align: center;
-        }
-        header h1 { line-height: 1.3; }
-        main {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        section {
-            background: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
-        h2 { color: #183153; }
-        footer {
-            text-align: center;
-            padding: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criminalidade | Francisco Davi</title>
+
+  <style>
+    :root {
+      --fundo: #f1f5f9;
+      --texto: #18253b;
+      --secundario: #526176;
+      --azul: #2563eb;
+      --borda: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(125deg, #0f172a, #173b70);
+      color: white;
+      padding: 72px 24px 64px;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: auto;
+    }
+
+    .etiqueta {
+      display: inline-block;
+      padding: 6px 14px;
+      border: 1px solid #647da1;
+      border-radius: 30px;
+      color: #dbeafe;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      max-width: 850px;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin: 24px 0 18px;
+    }
+
+    .subtitulo {
+      max-width: 700px;
+      color: #d0def0;
+      font-size: 18px;
+    }
+
+    .identificacao {
+      border-left: 3px solid #60a5fa;
+      padding-left: 18px;
+      margin: 28px 0;
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+
+    .botoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .botao {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform .2s, background .2s;
+    }
+
+    .botao:hover { transform: translateY(-3px); }
+
+    .principal {
+      background: #ffffff;
+      color: #173b70;
+    }
+
+    .principal:hover { background: #dbeafe; }
+
+    .alternativo {
+      background: #234771;
+      color: #ffffff;
+      border: 1px solid #6b87ac;
+    }
+
+    .alternativo:hover { background: #315c8f; }
+
+    a:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 5px;
+    }
+
+    main { padding: 36px 24px 60px; }
+
+    .indicadores {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .indicador, .cartao {
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      box-shadow: 0 5px 18px rgba(15, 23, 42, .04);
+    }
+
+    .indicador { padding: 22px; }
+
+    .numero {
+      display: block;
+      color: var(--azul);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .rotulo {
+      color: var(--secundario);
+      font-size: 14px;
+    }
+
+    .grade {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .cartao { padding: 30px; }
+
+    .largura-total { grid-column: 1 / -1; }
+
+    h2 {
+      font-size: 22px;
+      margin: 0 0 14px;
+      letter-spacing: -.5px;
+    }
+
+    p { margin: 0 0 16px; }
+
+    .cartao p, .cartao li { color: var(--secundario); }
+
+    .cartao a {
+      color: #1d4ed8;
+      text-underline-offset: 4px;
+    }
+
+    ul { padding-left: 20px; margin-bottom: 0; }
+
+    li { margin-bottom: 8px; }
+
+    .tecnologias {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tecnologia {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #dbeafe;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .aviso {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .aviso h2 { color: #854d0e; }
+    .aviso p { color: #70551c; margin-bottom: 0; }
+
+    footer {
+      text-align: center;
+      border-top: 1px solid var(--borda);
+      padding: 26px 24px;
+      color: var(--secundario);
+      font-size: 13px;
+      background: white;
+    }
+
+    @media (max-width: 700px) {
+      header { padding: 48px 24px; }
+      .indicadores { grid-template-columns: repeat(2, 1fr); }
+      .grade { grid-template-columns: 1fr; }
+      .cartao { padding: 24px; }
+      .botao { width: 100%; }
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <h1>Criminalidade em Grandes Cidades Brasileiras</h1>
-        <p>Projeto de análise e visualização de dados com Python</p>
-        <p>
-          Disciplina: Linguagens de Programação<br>
-          Professor: Alexandre Neves Louzada<br>
-          Aluno: Francisco Davi Barreto Aguiar
-        </p>
-        <p style="text-align: center; margin: 20px;">
-        <a href="https://ldpfranciscodavi-cedx2gketbmsrg2pixetq7.streamlit.app/"
-         target="_blank" rel="noopener noreferrer"
-         style="display: inline-block; background: #ffffff; color: #183153;
-            padding: 10px 20px; border-radius: 8px;
-            text-decoration: none; font-weight: bold;">
-            Acessar dashboard interativo
+  <header>
+    <div class="container">
+      <span class="etiqueta">PROJETO ACADÊMICO · ANÁLISE DE DADOS</span>
+
+      <h1>Criminalidade em Grandes Cidades Brasileiras</h1>
+
+      <p class="subtitulo">
+        Exploração de dados simulados com Python, visualizações
+        e um dashboard interativo.
+      </p>
+
+      <div class="identificacao">
+        <strong>Disciplina:</strong> Linguagens de Programação<br>
+        <strong>Professor:</strong> Alexandre Neves Louzada<br>
+        <strong>Aluno:</strong> Francisco Davi Barreto Aguiar
+      </div>
+
+      <nav class="botoes" aria-label="Links do projeto">
+        <a class="botao principal"
+           href="https://ldpfranciscodavi-cedx2gketbmsrg2pixetq7.streamlit.app/"
+           target="_blank" rel="noopener noreferrer">
+          Acessar dashboard ↗
         </a>
+
+        <a class="botao alternativo"
+           href="https://github.com/agguiar/LDP_FranciscoDavi/tree/main/projeto_criminalidade"
+           target="_blank" rel="noopener noreferrer">
+          Ver projeto no GitHub ↗
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="indicadores" aria-label="Resumo da base">
+      <div class="indicador">
+        <span class="numero">4.440</span>
+        <span class="rotulo">Registros na base</span>
+      </div>
+
+      <div class="indicador">
+        <span class="numero">37</span>
+        <span class="rotulo">Cidades representadas</span>
+      </div>
+
+      <div class="indicador">
+        <span class="numero">5</span>
+        <span class="rotulo">Regiões brasileiras</span>
+      </div>
+
+      <div class="indicador">
+        <span class="numero">2015–2024</span>
+        <span class="rotulo">Período analisado</span>
+      </div>
+    </section>
+
+    <div class="grade">
+      <section class="cartao">
+        <h2>Objetivo do projeto</h2>
         <p>
-        <a href="https://github.com/agguiar/LDP_FranciscoDavi/tree/main/projeto_criminalidade"
-         target="_blank" rel="noopener noreferrer"
-         style="display: inline-block; background: white; color: #183153;
-            padding: 10px 20px; border-radius: 8px;
-            text-decoration: none; font-weight: bold;">
-        Ver projeto no GitHub
-      </a>
-    </p>
+          Aplicar técnicas de tratamento e análise de dados para explorar
+          a distribuição de ocorrências por localização, tipo de crime
+          e período, apresentando os resultados em uma aplicação interativa.
         </p>
-    </header>
+      </section>
 
-    <main>
-        <section>
-            <h2>Objetivo</h2>
-            <p>
-                Explorar a evolução das ocorrências e comparar cidades,
-                regiões, tipos de crime e períodos do dia por meio
-                de um dashboard interativo.
-            </p>
-        </section>
+      <section class="cartao">
+        <h2>Sobre os dados</h2>
+        <p>
+          A base reúne informações simuladas sobre ocorrências, vítimas,
+          prisões, renda média, índice de violência e nível de risco.
+        </p>
+        <a href="https://github.com/AlexandreLouzada/Dados-Simulados-G2/blob/main/datasets_g2_30_temas/simulacao_criminalidade_brasil.csv"
+           target="_blank" rel="noopener noreferrer">
+          Consultar a base original ↗
+        </a>
+      </section>
 
-        <section>
-            <h2>Base de dados</h2>
-            <p>
-                Base simulada com 4.440 registros de 37 cidades
-                brasileiras, entre 2015 e 2024.
-            </p>
-            <p>
-                Fonte:
-                <a href="https://github.com/AlexandreLouzada/Dados-Simulados-G2">
-                    Dados-Simulados-G2 — Alexandre Louzada
-                </a>.
-            </p>
-        </section>
+      <section class="cartao">
+        <h2>Análises disponíveis</h2>
+        <ul>
+          <li>Evolução das ocorrências ao longo do tempo.</li>
+          <li>Comparação dos totais por cidade e tipo de crime.</li>
+          <li>Comparação de indicadores entre regiões.</li>
+          <li>Mapa de calor por crime e período do dia.</li>
+          <li>Relação entre renda média e índice de violência.</li>
+          <li>Tabelas e indicadores atualizados pelos filtros.</li>
+        </ul>
+      </section>
 
-        <section>
-            <h2>Análises disponíveis</h2>
-            <ul>
-                <li>Evolução mensal das ocorrências.</li>
-                <li>Rankings de cidades e tipos de crime.</li>
-                <li>Comparação entre regiões.</li>
-                <li>Mapa de calor por crime e período do dia.</li>
-                <li>Relação entre renda média e índice de violência.</li>
-                <li>Tabela de ocorrências por região e crime.</li>
-            </ul>
-        </section>
+      <section class="cartao">
+        <h2>Como foi desenvolvido</h2>
+        <ul>
+          <li>Verificação de valores ausentes e duplicados.</li>
+          <li>Tratamento de datas e organização das variáveis.</li>
+          <li>Agrupamentos, cálculos e análise exploratória.</li>
+          <li>Armazenamento em SQLite com SQLAlchemy.</li>
+          <li>Dashboard com filtros e múltiplas páginas.</li>
+          <li>Publicação no Streamlit Cloud e GitHub Pages.</li>
+        </ul>
+      </section>
 
-        <section>
-            <h2>Tecnologias utilizadas</h2>
-            <p>
-                Python, Pandas, Matplotlib, Seaborn, Streamlit,
-                SQLAlchemy e SQLite.
-            </p>
-        </section>
+      <section class="cartao largura-total">
+        <h2>Tecnologias utilizadas</h2>
+        <div class="tecnologias">
+          <span class="tecnologia">Python</span>
+          <span class="tecnologia">Pandas</span>
+          <span class="tecnologia">Matplotlib</span>
+          <span class="tecnologia">Seaborn</span>
+          <span class="tecnologia">Streamlit</span>
+          <span class="tecnologia">SQLAlchemy</span>
+          <span class="tecnologia">SQLite</span>
+          <span class="tecnologia">GitHub</span>
+        </div>
+      </section>
 
-        <section>
-            <h2>Conclusão e limitações</h2>
-            <p>
-                O projeto transforma dados em indicadores e visualizações,
-                facilitando a exploração com filtros interativos.
-                Os dados são simulados e não representam a segurança
-                real das cidades. Os totais não são ajustados pela
-                população, e a correlação não comprova causa e efeito.
-            </p>
-        </section>
-    </main>
+      <section class="cartao largura-total">
+        <h2>Conclusão</h2>
+        <p>
+          O projeto integrou tratamento, armazenamento, análise e
+          visualização de dados. O dashboard permite explorar diferentes
+          recortes da base e acompanhar seus indicadores, demonstrando
+          a aplicação das ferramentas estudadas na disciplina.
+        </p>
+      </section>
 
-    <footer>Projeto acadêmico — Sistemas de Informação</footer>
+      <section class="cartao aviso largura-total">
+        <h2>Limites da análise</h2>
+        <p>
+          Os dados são simulados e têm finalidade acadêmica.
+          Os resultados não representam a criminalidade real das cidades.
+          Os totais não são taxas por população, o índice de violência
+          não é uma porcentagem e correlação não comprova causalidade.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    Francisco Davi Barreto Aguiar · Linguagens de Programação<br>
+    Professor Alexandre Neves Louzada
+  </footer>
 </body>
 </html>
