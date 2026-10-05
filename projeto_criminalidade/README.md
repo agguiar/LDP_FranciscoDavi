@@ -2,6 +2,10 @@
 
 Projeto acadêmico de análise e visualização de dados com Python.
 
+**Disciplina:** Linguagens de Programação  
+**Professor:** Alexandre Neves Louzada  
+**Aluno:** Francisco Davi Barreto Aguiar
+
 ## Objetivo
 
 Explorar a evolução das ocorrências e comparar cidades, regiões,
