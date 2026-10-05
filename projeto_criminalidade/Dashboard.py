@@ -11,6 +11,12 @@ st.set_page_config(
 
 st.title("Criminalidade em Grandes Cidades Brasileiras")
 
+st.markdown("""
+**Disciplina:** Linguagens de Programação  
+**Professor:** Alexandre Neves Louzada  
+**Aluno:** Francisco Davi Barreto Aguiar
+""")
+
 st.write(
     "Análise de dados simulados de criminalidade "
     "entre 2015 e 2024."
