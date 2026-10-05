@@ -7,6 +7,12 @@ st.set_page_config(
 
 st.title("Sobre o projeto")
 
+st.markdown("""
+**Disciplina:** Linguagens de Programação  
+**Professor:** Alexandre Neves Louzada  
+**Aluno:** Francisco Davi Barreto Aguiar
+""")
+
 st.header("Objetivo")
 
 st.write(
