@@ -750,10 +750,10 @@ print(incidentes_anuais)</div>
             <strong>A — Accessible</strong>
             <p>
                 Acessível: o código e os dados
-                poderão ser consultados no
-                repositório público após sua
-                publicação. O artigo será
-                disponibilizado via GitHub Pages.
+                estão disponíveis publicamente
+                no repositório GitHub. O artigo
+                acadêmico está publicado e
+                acessível via GitHub Pages.
             </p>
         </div>
 
@@ -792,11 +792,12 @@ print(incidentes_anuais)</div>
         </p>
 
         <div class="codigo">git clone https://github.com/agguiar/LDP_FranciscoDavi.git
-cd LDP_FranciscoDavi/projeto_G2
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python src/etl.py</div>
+            cd LDP_FranciscoDavi/projeto_G2
+            python -m venv .venv
+            source .venv/bin/activate
+            pip install -r requirements.txt
+            python -m src.etl
+        </div>
 
         <p>
             Os comandos pressupõem que a estrutura
@@ -912,8 +913,16 @@ function criarGrafico(id, tipo, labels, valores, titulo, coresGrafico) {
                     callbacks: {
                         label: contexto => {
                             const valor = contexto.parsed.y;
-                            return titulo + ": " +
-                                numero(valor);
+
+                            if (titulo === "Variação (%)") {
+                                return titulo + ": " +
+                                valor.toLocaleString("pt-BR", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                                }) + "%";
+                            }
+
+                            return titulo + ": " + numero(valor);
                         }
                     }
                 }
