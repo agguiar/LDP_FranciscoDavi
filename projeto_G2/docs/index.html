@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise de Incidentes Cibernéticos | Francisco Davi</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --fundo: #080e1c;
+    --painel: #111c30;
+    --borda: #263650;
+    --texto: #e9f0fc;
+    --suave: #a5b5cd;
+    --azul: #4b91ff;
+    --verde: #34d9b0;
+}
+
+* { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 85px;
+}
+
+body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.8;
+}
+
+a { color: var(--azul); }
+
+header {
+    text-align: center;
+    padding: 85px 22px 75px;
+    background: radial-gradient(ellipse at top, #183b70, #080e1c 75%);
+    border-bottom: 1px solid var(--borda);
+}
+
+.tag {
+    display: inline-block;
+    padding: 7px 17px;
+    border: 1px solid #3264a1;
+    border-radius: 30px;
+    color: #9cc7ff;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+header h1 {
+    max-width: 950px;
+    margin: 25px auto;
+    font-size: clamp(32px, 5vw, 58px);
+    line-height: 1.17;
+    letter-spacing: -2px;
+}
+
+.destaque { color: var(--azul); }
+
+.subtitulo {
+    color: var(--suave);
+    font-size: 18px;
+    max-width: 750px;
+    margin: auto;
+}
+
+.autor {
+    margin-top: 30px;
+    color: var(--suave);
+    font-size: 14px;
+}
+
+.autor strong {
+    color: white;
+    font-size: 17px;
+}
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.botao {
+    display: inline-block;
+    padding: 13px 24px;
+    background: var(--azul);
+    color: #061225;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: .2s;
+}
+
+.botao:hover {
+    transform: translateY(-3px);
+    background: #8bbaff;
+}
+
+.botao.secundario {
+    background: #192b45;
+    color: white;
+    border: 1px solid var(--borda);
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    background: rgba(8,14,28,.97);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--borda);
+    padding: 16px 20px;
+}
+
+nav a {
+    color: var(--suave);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+nav a:hover { color: var(--azul); }
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 35px 22px;
+}
+
+section {
+    padding: 55px 0;
+    border-bottom: 1px solid var(--borda);
+    scroll-margin-top: 95px;
+}
+
+h2 {
+    font-size: clamp(24px, 3vw, 30px);
+    letter-spacing: -.7px;
+    margin-bottom: 25px;
+}
+
+h3 { color: #b8d4ff; }
+
+p { color: var(--suave); }
+
+.caixa {
+    background: var(--painel);
+    border: 1px solid var(--borda);
+    border-radius: 17px;
+    padding: 30px;
+    margin: 22px 0;
+}
+
+.resumo {
+    border-left: 4px solid var(--azul);
+}
+
+.resumo h3 {
+    color: var(--azul);
+    margin-top: 0;
+}
+
+.sumario a {
+    display: block;
+    padding: 7px 0;
+    text-decoration: none;
+}
+
+.metricas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.metrica {
+    background: var(--painel);
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+    padding: 22px;
+}
+
+.metrica span {
+    display: block;
+    color: var(--suave);
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.metrica strong {
+    display: block;
+    font-size: clamp(19px, 2.3vw, 29px);
+    color: var(--verde);
+}
+
+.grafico {
+    background: #101c30;
+    border: 1px solid var(--borda);
+    border-radius: 18px;
+    padding: 25px;
+    margin: 28px 0;
+}
+
+.grafico h3 { margin-top: 0; }
+
+.grafico p {
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.chart-area {
+    position: relative;
+    height: 360px;
+    width: 100%;
+}
+
+.codigo {
+    background: #080f1e;
+    border: 1px solid var(--borda);
+    padding: 22px;
+    border-radius: 12px;
+    overflow-x: auto;
+    color: #a8e4ce;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre;
+}
+
+.fair {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.fair-item {
+    background: var(--painel);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    padding: 23px;
+}
+
+.fair-item strong {
+    color: var(--verde);
+    font-size: 19px;
+}
+
+.fair-item p {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.status {
+    color: var(--verde);
+    font-size: 13px;
+    margin: 20px 0;
+}
+
+.perguntas {
+    border-left: 3px solid var(--azul);
+    padding-left: 22px;
+    margin: 25px 0;
+}
+
+footer {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--suave);
+    font-size: 13px;
+}
+
+@media(max-width: 800px) {
+    .metricas { grid-template-columns: repeat(2, 1fr); }
+    .fair { grid-template-columns: 1fr; }
+    .chart-area { height: 300px; }
+    header { padding: 65px 18px; }
+    nav { gap: 8px 14px; }
+    nav a { font-size: 12px; }
+    section { scroll-margin-top: 140px; }
+}
+
+@media(max-width: 450px) {
+    .metricas { grid-template-columns: 1fr; }
+    .caixa, .grafico { padding: 18px; }
+    .chart-area { height: 260px; }
+    header h1 { letter-spacing: -1px; }
+}
+</style>
+</head>
+
+<body>
+
+<header id="inicio">
+    <div class="tag">PROJETO ACADÊMICO • 2026</div>
+
+    <h1>
+        Análise de
+        <span class="destaque">Incidentes Cibernéticos</span>
+        no Brasil
+    </h1>
+
+    <p class="subtitulo">
+        Estudo exploratório dos incidentes reportados ao
+        CERT.br entre 2010 e 2019, utilizando Python,
+        análise de dados e princípios FAIR.
+    </p>
+
+    <div class="autor">
+        <strong>Francisco Davi Barreto Aguiar</strong><br>
+        Bacharelado em Sistemas de Informação — UniLaSalle<br>
+        Disciplina: Linguagem de Programação (6º Período)
+    </div>
+
+    <div class="botoes">
+        <a class="botao"
+           href="https://github.com/agguiar/LDP_FranciscoDavi/tree/main/projeto_G2"
+           target="_blank" rel="noopener noreferrer">
+            📦 Ver Repositório GitHub (Código e Dados)
+        </a>
+
+        <a class="botao secundario" href="#resultados">
+            Explorar Resultados ↓
+        </a>
+    </div>
+</header>
+
+<nav>
+    <a href="#resumo">Resumo</a>
+    <a href="#introducao">Introdução</a>
+    <a href="#metodologia">Metodologia</a>
+    <a href="#resultados">Resultados</a>
+    <a href="#conclusao">Conclusão</a>
+    <a href="#fair">Princípios FAIR</a>
+    <a href="#referencias">Referências</a>
+</nav>
+
+<main>
+
+<section id="resumo">
+    <div class="caixa resumo">
+        <h3>RESUMO</h3>
+
+        <p>
+            Este artigo apresenta uma análise exploratória dos
+            incidentes cibernéticos reportados ao Centro de Estudos,
+            Resposta e Tratamento de Incidentes de Segurança no Brasil
+            (CERT.br), considerando o período de 2010 a 2019.
+            A pesquisa utiliza Python e bibliotecas de análise e
+            visualização de dados para investigar tendências temporais,
+            categorias predominantes e variações na quantidade
+            de notificações de incidentes.
+        </p>
+
+        <p>
+            A metodologia contempla a extração de dados históricos
+            em formato Excel, verificação de consistência, padronização
+            e transformação dos registros, seguida da construção de
+            indicadores estatísticos e gráficos interativos.
+            Foram analisadas 120 observações mensais, totalizando
+            6.163.277 notificações. O ano de 2014 apresentou o maior
+            volume anual, enquanto a categoria Scan concentrou
+            a maior quantidade acumulada de registros.
+        </p>
+
+        <p>
+            Os resultados evidenciam oscilações relevantes ao longo
+            da série histórica e demonstram a importância da análise
+            exploratória na interpretação de dados de segurança
+            cibernética. O projeto também considera os princípios
+            FAIR, visando promover a localização, acessibilidade,
+            interoperabilidade e reutilização dos dados e códigos.
+            A organização dos artefatos em um repositório público
+            busca favorecer a transparência metodológica e a
+            reprodução das análises realizadas.
+        </p>
+
+        <p>
+            <strong>Palavras-chave:</strong>
+            Segurança Cibernética; Python; Análise de Dados;
+            CERT.br; Visualização de Dados; Princípios FAIR.
+        </p>
+    </div>
+
+    <div class="caixa sumario">
+        <h3>Sumário</h3>
+        <a href="#introducao">01 — Introdução</a>
+        <a href="#metodologia">02 — Metodologia e Pipeline de Dados</a>
+        <a href="#resultados">03 — Resultados e Discussão Visual</a>
+        <a href="#conclusao">04 — Conclusão</a>
+        <a href="#fair">05 — Disponibilidade dos Dados e Princípios FAIR</a>
+        <a href="#referencias">06 — Referências</a>
+    </div>
+</section>
+
+<section id="introducao">
+    <h2>01. Introdução</h2>
+
+    <p>
+        A crescente utilização de tecnologias digitais transformou
+        a maneira como pessoas, empresas e instituições públicas
+        armazenam e compartilham informações. Entretanto, essa
+        transformação também ampliou a exposição a ameaças
+        cibernéticas.
+    </p>
+
+    <p>
+        Incidentes como ataques de negação de serviço, tentativas
+        de fraude, invasões, disseminação de códigos maliciosos
+        e atividades de varredura representam desafios para a
+        segurança da informação.
+    </p>
+
+    <p>
+        Nesse contexto, a análise de dados históricos permite
+        compreender a evolução das notificações, identificar
+        categorias relevantes e reconhecer períodos de
+        crescimento ou redução.
+    </p>
+
+    <h3>Perguntas de Pesquisa</h3>
+
+    <div class="perguntas">
+        <p>
+            <strong>RQ1:</strong> Como evoluiu a quantidade anual
+            de incidentes cibernéticos reportados ao CERT.br
+            entre 2010 e 2019?
+        </p>
+
+        <p>
+            <strong>RQ2:</strong> Quais categorias de incidentes
+            concentraram as maiores quantidades de notificações
+            durante o período analisado?
+        </p>
+
+        <p>
+            <strong>RQ3:</strong> Quais anos apresentaram as
+            maiores variações percentuais positivas e negativas
+            nas notificações?
+        </p>
+    </div>
+
+    <p>
+        Os resultados representam notificações registradas na
+        base analisada e não necessariamente todos os incidentes
+        efetivamente ocorridos no Brasil.
+    </p>
+</section>
+
+<section id="metodologia">
+    <h2>02. Metodologia e Pipeline de Dados</h2>
+
+    <p>
+        O estudo foi desenvolvido utilizando uma base histórica
+        de incidentes cibernéticos do CERT.br, organizada por
+        ano, mês e categoria. O arquivo original foi
+        disponibilizado em formato Excel, com registros
+        de 2010 a 2019.
+    </p>
+
+    <div class="caixa">
+        <h3>Características do conjunto de dados</h3>
+        <p>
+            <strong>Fonte:</strong> CERT.br<br>
+            <strong>Período:</strong> 2010 a 2019<br>
+            <strong>Registros:</strong> 120 observações mensais<br>
+            <strong>Colunas originais:</strong> 10<br>
+            <strong>Formato original:</strong> XLS<br>
+            <strong>Formato tratado:</strong> CSV
+        </p>
+    </div>
+
+    <h3>2.1 Tecnologias utilizadas</h3>
+
+    <p>
+        O desenvolvimento foi realizado em Python 3.13,
+        utilizando pandas para manipulação dos dados,
+        NumPy para operações numéricas, Matplotlib e
+        Seaborn para visualização estatística e Plotly
+        para exploração interativa. A página web utiliza
+        HTML5, CSS3, JavaScript e Chart.js.
+    </p>
+
+    <h3>2.2 Extração, transformação e carregamento</h3>
+
+    <p>
+        O pipeline ETL foi organizado em três etapas.
+        Na extração, o arquivo Excel foi carregado para
+        um DataFrame. Na transformação, foram padronizados
+        os nomes das colunas, verificados os tipos de dados,
+        os valores ausentes e os registros duplicados.
+        Também foram criadas colunas auxiliares para
+        representar o número do mês e a data.
+    </p>
+
+    <p>
+        A inspeção inicial identificou ausência de valores
+        nulos e de registros duplicados. Dessa forma,
+        não foi necessária imputação ou exclusão de
+        observações por esses motivos.
+    </p>
+
+    <p>
+        Os campos quantitativos foram utilizados para
+        calcular totais anuais, distribuições acumuladas
+        por categoria e variações percentuais entre anos.
+        Os dados tratados foram exportados para CSV.
+    </p>
+
+    <div class="codigo">import pandas as pd
+from pathlib import Path
+
+arquivo = Path("data/raw/cert_2010-2019.xls")
+dados = pd.read_excel(arquivo)
+
+print(dados.shape)
+print(dados.isnull().sum())
+print(dados.duplicated().sum())
+
+incidentes_anuais = dados.groupby("Ano")["Total"].sum()
+
+print(incidentes_anuais)</div>
+
+    <h3>2.3 Organização e reprodutibilidade</h3>
+
+    <p>
+        Os arquivos originais estão organizados em
+        <strong>data/raw</strong>, enquanto os dados
+        tratados são armazenados em
+        <strong>data/processed</strong>.
+        O código do pipeline encontra-se em
+        <strong>src/etl.py</strong>, e a análise
+        exploratória está documentada em
+        <strong>notebooks/analise_exploratoria.ipynb</strong>.
+    </p>
+
+    <p>
+        A separação entre dados brutos, dados processados,
+        código-fonte e documentação permite compreender
+        as etapas do trabalho e facilita sua reprodução.
+    </p>
+</section>
+
+<section id="resultados">
+    <h2>03. Resultados e Discussão Visual</h2>
+
+    <p>
+        A análise dos dados permitiu identificar diferenças
+        expressivas entre os anos e as categorias de
+        incidentes. Os indicadores abaixo resumem os
+        resultados obtidos para o período de 2010 a 2019.
+    </p>
+
+    <div class="metricas">
+        <div class="metrica">
+            <span>TOTAL DE INCIDENTES</span>
+            <strong id="total">6.163.277</strong>
+        </div>
+
+        <div class="metrica">
+            <span>MÉDIA ANUAL</span>
+            <strong id="media">616.327,70</strong>
+        </div>
+
+        <div class="metrica">
+            <span>ANO DE MAIOR VOLUME</span>
+            <strong id="pico">2014</strong>
+        </div>
+
+        <div class="metrica">
+            <span>PERÍODO ANALISADO</span>
+            <strong>10 anos</strong>
+        </div>
+    </div>
+
+    <p id="status" class="status">
+        Carregando os dados do projeto...
+    </p>
+
+    <div class="grafico">
+        <h3>3.1 Evolução anual dos incidentes</h3>
+        <div class="chart-area">
+            <canvas id="graficoAnual"></canvas>
+        </div>
+        <p>
+            Figura 1 — Quantidade anual de incidentes
+            cibernéticos reportados entre 2010 e 2019.
+            Fonte: elaboração própria com dados do CERT.br.
+        </p>
+    </div>
+
+    <p>
+        Em resposta à RQ1, o ano de 2014 apresentou o
+        maior número de incidentes, com crescimento
+        de aproximadamente 196,67% em relação a 2013.
+        Já 2015 registrou uma redução de aproximadamente
+        31,02% em relação ao ano anterior.
+    </p>
+
+    <p>
+        Essas oscilações demonstram que a evolução das
+        notificações não ocorreu de maneira linear.
+        Entretanto, os números não permitem afirmar
+        isoladamente que houve aumento proporcional
+        dos incidentes efetivamente ocorridos.
+    </p>
+
+    <div class="grafico">
+        <h3>3.2 Distribuição por categoria</h3>
+        <div class="chart-area">
+            <canvas id="graficoCategorias"></canvas>
+        </div>
+        <p>
+            Figura 2 — Distribuição acumulada das
+            notificações por categoria.
+            Fonte: elaboração própria com dados do CERT.br.
+        </p>
+    </div>
+
+    <p>
+        Em resposta à RQ2, a categoria Scan apresentou
+        a maior quantidade acumulada de notificações,
+        seguida pelas categorias Fraude e DOS.
+        As demais categorias analisadas foram Worm,
+        Outros, Web e Invasao.
+    </p>
+
+    <p>
+        A predominância de Scan evidencia a relevância
+        dos registros de atividades de varredura no
+        conjunto de dados investigado. Essa concentração
+        deve ser interpretada considerando as definições
+        de classificação adotadas pela fonte original.
+    </p>
+
+    <div class="grafico">
+        <h3>3.3 Variação percentual anual</h3>
+        <div class="chart-area">
+            <canvas id="graficoVariacao"></canvas>
+        </div>
+        <p>
+            Figura 3 — Variação percentual das
+            notificações em relação ao ano anterior.
+            Fonte: elaboração própria com dados do CERT.br.
+        </p>
+    </div>
+
+    <p>
+        Em resposta à RQ3, o maior aumento percentual
+        ocorreu em 2014, com aproximadamente 196,67%.
+        A maior redução ocorreu em 2015, com queda
+        aproximada de 31,02%.
+    </p>
+
+    <p>
+        A comparação percentual permite identificar
+        períodos de crescimento acelerado e retração,
+        mas não estabelece relações de causalidade.
+        Fatores como mudanças na quantidade de
+        notificações recebidas e nos procedimentos
+        de classificação podem influenciar os resultados.
+    </p>
+</section>
+
+<section id="conclusao">
+    <h2>04. Conclusão</h2>
+
+    <p>
+        O desenvolvimento deste projeto demonstrou a
+        aplicação prática de Python na organização,
+        no tratamento e na análise exploratória de
+        dados relacionados à segurança cibernética.
+    </p>
+
+    <p>
+        A investigação de 120 registros mensais,
+        correspondentes ao período de 2010 a 2019,
+        permitiu identificar um total de 6.163.277
+        notificações, com destaque para o ano de 2014,
+        que apresentou o maior volume anual.
+    </p>
+
+    <p>
+        Também foi possível observar a predominância
+        da categoria Scan e oscilações significativas
+        nas notificações ao longo do período.
+        As três perguntas de pesquisa foram abordadas
+        por meio de indicadores estatísticos e
+        visualizações gráficas.
+    </p>
+
+    <p>
+        A utilização de um pipeline ETL e de
+        ferramentas de visualização contribuiu
+        para transformar dados tabulares em
+        informações mais acessíveis e interpretáveis.
+    </p>
+
+    <p>
+        Como limitação, destaca-se que os registros
+        correspondem a incidentes reportados,
+        podendo sofrer influência de mudanças
+        na notificação e na classificação.
+    </p>
+
+    <p>
+        Como trabalho futuro, recomenda-se ampliar
+        a série histórica, investigar padrões
+        específicos de cada categoria e comparar
+        diferentes períodos de notificação.
+    </p>
+</section>
+
+<section id="fair">
+    <h2>05. Disponibilidade dos Dados e Princípios FAIR</h2>
+
+    <p>
+        O projeto foi estruturado considerando os
+        princípios FAIR, que orientam boas práticas
+        para tornar dados e resultados científicos
+        localizáveis, acessíveis, interoperáveis
+        e reutilizáveis.
+    </p>
+
+    <div class="fair">
+        <div class="fair-item">
+            <strong>F — Findable</strong>
+            <p>
+                Localizável: o repositório GitHub
+                identifica o projeto e organiza
+                seus arquivos, scripts e documentação.
+                O README apresenta informações
+                para facilitar sua descoberta.
+            </p>
+        </div>
+
+        <div class="fair-item">
+            <strong>A — Accessible</strong>
+            <p>
+                Acessível: o código e os dados
+                poderão ser consultados no
+                repositório público após sua
+                publicação. O artigo será
+                disponibilizado via GitHub Pages.
+            </p>
+        </div>
+
+        <div class="fair-item">
+            <strong>I — Interoperable</strong>
+            <p>
+                Interoperável: os dados tratados
+                são armazenados em CSV, formato
+                amplamente utilizado por ferramentas
+                de análise. O dicionário de dados
+                documenta as variáveis.
+            </p>
+        </div>
+
+        <div class="fair-item">
+            <strong>R — Reusable</strong>
+            <p>
+                Reutilizável: os scripts Python,
+                o notebook, o arquivo de
+                dependências e as instruções
+                de execução permitem reproduzir
+                e ampliar a análise, respeitando
+                as condições de licença.
+            </p>
+        </div>
+    </div>
+
+    <div class="caixa">
+        <h3>Reprodução do projeto</h3>
+
+        <p>
+            Após a publicação dos arquivos no GitHub,
+            o repositório poderá ser clonado e o
+            ambiente Python configurado com os
+            seguintes comandos.
+        </p>
+
+        <div class="codigo">git clone https://github.com/agguiar/LDP_FranciscoDavi.git
+cd LDP_FranciscoDavi/projeto_G2
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python src/etl.py</div>
+
+        <p>
+            Os comandos pressupõem que a estrutura
+            do projeto esteja publicada no caminho
+            indicado e que as dependências estejam
+            registradas em requirements.txt.
+        </p>
+    </div>
+</section>
+
+<section id="referencias">
+    <h2>06. Referências</h2>
+
+    <div class="caixa">
+        <p>
+            CERT.br — CENTRO DE ESTUDOS, RESPOSTA E
+            TRATAMENTO DE INCIDENTES DE SEGURANÇA NO BRASIL.
+            Estatísticas dos incidentes reportados ao CERT.br.
+            Disponível em:
+            <a href="https://www.cert.br/stats/" target="_blank">
+                https://www.cert.br/stats/
+            </a>.
+        </p>
+
+        <p>
+            WILKINSON, Mark D. et al.
+            The FAIR Guiding Principles for scientific
+            data management and stewardship.
+            <em>Scientific Data</em>, v. 3, 2016.
+        </p>
+
+        <p>
+            MCKINNEY, Wes.
+            <em>Python for Data Analysis: Data Wrangling
+            with pandas, NumPy, and Jupyter</em>.
+            3. ed. O'Reilly Media, 2022.
+        </p>
+
+        <p>
+            THE PANDAS DEVELOPMENT TEAM.
+            pandas documentation.
+            Disponível em:
+            <a href="https://pandas.pydata.org/docs/" target="_blank">
+                https://pandas.pydata.org/docs/
+            </a>.
+        </p>
+
+        <p>
+            CHART.JS CONTRIBUTORS.
+            Chart.js Documentation.
+            Disponível em:
+            <a href="https://www.chartjs.org/docs/latest/" target="_blank">
+                https://www.chartjs.org/docs/latest/
+            </a>.
+        </p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <strong>Francisco Davi Barreto Aguiar</strong><br>
+    Bacharelado em Sistemas de Informação — UniLaSalle<br>
+    Linguagem de Programação • 6º Período<br>
+    Projeto acadêmico • 2026
+</footer>
+
+<script>
+const nomesCategorias = [
+    "Worm", "DOS", "Invasao", "Web",
+    "Scan", "Fraude", "Outros"
+];
+
+const cores = [
+    "#4b91ff", "#34d9b0", "#a78bfa",
+    "#f9bc66", "#5dd4f4", "#ff7895", "#94a3b8"
+];
+
+Chart.defaults.color = "#a5b5cd";
+Chart.defaults.borderColor = "rgba(165,181,205,0.12)";
+
+let graficos = [];
+
+function numero(valor) {
+    return Number(valor).toLocaleString("pt-BR");
+}
+
+function criarGrafico(id, tipo, labels, valores, titulo, coresGrafico) {
+    const contexto = document.getElementById(id);
+
+    const grafico = new Chart(contexto, {
+        type: tipo,
+        data: {
+            labels: labels,
+            datasets: [{
+                label: titulo,
+                data: valores,
+                borderColor: "#4b91ff",
+                backgroundColor: coresGrafico || "rgba(75,145,255,0.45)",
+                borderWidth: 2,
+                tension: 0.3,
+                fill: tipo === "line",
+                pointRadius: tipo === "line" ? 4 : 0,
+                borderRadius: tipo === "bar" ? 5 : 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: contexto => {
+                            const valor = contexto.parsed.y;
+                            return titulo + ": " +
+                                numero(valor);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: tipo !== "line",
+                    ticks: {
+                        callback: valor => numero(valor)
+                    }
+                },
+                x: {
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 0
+                    }
+                }
+            }
+        }
+    });
+
+    graficos.push(grafico);
+}
+
+function mostrarDados(registros) {
+    graficos.forEach(g => g.destroy());
+    graficos = [];
+
+    const anos = [...new Set(registros.map(r => r.Ano))]
+        .sort((a, b) => a - b);
+
+    const totaisAnuais = anos.map(ano =>
+        registros
+            .filter(r => r.Ano === ano)
+            .reduce((soma, r) => soma + r.Total, 0)
+    );
+
+    const totalGeral = totaisAnuais.reduce(
+        (soma, valor) => soma + valor, 0
+    );
+
+    const maiorTotal = Math.max(...totaisAnuais);
+    const anoPico = anos[totaisAnuais.indexOf(maiorTotal)];
+
+    document.getElementById("total").textContent =
+        numero(totalGeral);
+
+    document.getElementById("media").textContent =
+        (totalGeral / anos.length).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    document.getElementById("pico").textContent = anoPico;
+
+    criarGrafico(
+        "graficoAnual",
+        "line",
+        anos,
+        totaisAnuais,
+        "Incidentes"
+    );
+
+    const categorias = nomesCategorias.map(nome => ({
+        nome,
+        total: registros.reduce(
+            (soma, r) => soma + r[nome], 0
+        )
+    })).sort((a, b) => b.total - a.total);
+
+    criarGrafico(
+        "graficoCategorias",
+        "bar",
+        categorias.map(c => c.nome),
+        categorias.map(c => c.total),
+        "Incidentes",
+        cores
+    );
+
+    const variacoes = totaisAnuais.slice(1).map((valor, i) =>
+        ((valor - totaisAnuais[i]) / totaisAnuais[i]) * 100
+    );
+
+    criarGrafico(
+        "graficoVariacao",
+        "bar",
+        anos.slice(1),
+        variacoes.map(v => Number(v.toFixed(2))),
+        "Variação (%)",
+        variacoes.map(v =>
+            v >= 0 ? "#34d9b0" : "#ff7895"
+        )
+    );
+}
+
+function converterCSV(texto) {
+    const linhas = texto.replace(/^\uFEFF/, "")
+        .trim()
+        .split(/\r?\n/);
+
+    const separador = linhas[0].includes(";") ? ";" : ",";
+    const cabecalho = linhas.shift()
+        .split(separador)
+        .map(c => c.replace(/^"|"$/g, "").trim());
+
+    const campos = ["Ano", "Total", ...nomesCategorias];
+
+    campos.forEach(campo => {
+        if (!cabecalho.includes(campo)) {
+            throw new Error("Coluna não encontrada: " + campo);
+        }
+    });
+
+    return linhas.filter(linha => linha.trim()).map(linha => {
+        const valores = linha.split(separador);
+        const registro = {};
+
+        cabecalho.forEach((coluna, i) => {
+            registro[coluna] = valores[i]
+                ? valores[i].replace(/^"|"$/g, "").trim()
+                : "";
+        });
+
+        campos.forEach(campo => {
+            registro[campo] = Number(registro[campo]);
+
+            if (!Number.isFinite(registro[campo])) {
+                throw new Error("Valor inválido em " + campo);
+            }
+        });
+
+        return registro;
+    });
+}
+
+async function carregarAutomaticamente() {
+    const status = document.getElementById("status");
+
+    const caminhos = [
+        "../data/processed/incidentes_tratados.csv",
+        "https://raw.githubusercontent.com/agguiar/LDP_FranciscoDavi/main/projeto_G2/data/processed/incidentes_tratados.csv"
+    ];
+
+    for (const caminho of caminhos) {
+        try {
+            const resposta = await fetch(caminho);
+
+            if (!resposta.ok) continue;
+
+            const texto = await resposta.text();
+            const registros = converterCSV(texto);
+
+            if (!registros.length) continue;
+
+            mostrarDados(registros);
+
+            status.textContent =
+                "Dados carregados automaticamente: " +
+                registros.length + " registros analisados.";
+
+            return;
+        } catch (erro) {
+            console.warn("Falha ao carregar:", caminho, erro);
+        }
+    }
+
+    status.textContent =
+        "Não foi possível carregar o CSV. Verifique se os dados estão publicados no GitHub.";
+    status.style.color = "#ff7895";
+}
+
+carregarAutomaticamente();
+</script>
+
+</body>
+</html>
